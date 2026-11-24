@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LEVEL 13 — Beyond the Known</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* VOICE: hushed, exact, inviting — a society that speaks in few words.
+   IDEA: an initiation scroll — six chambers you pass through, each a step beyond the twelve.
+   PICTURE: a living 3D ring of twelve points with a thirteenth at its heart that re-forms in every chamber.
+   COLOUR and TYPE: obsidian ground, warm white ink, antique gold, silver, a breath of violet. Cormorant Garamond + Jost.
+   LAYOUT: full-height chambers, the ring as the stage; copy set left with air; deck keys + swipe. */
+:root{color-scheme:dark;--bg:#07070a;--bg2:#0d0c12;--ink:#efe9dd;--mute:#a7a3ad;--gold:#c9a75e;--gold2:#e8cf94;--silver:#b9bcc6;--violet:#6e5ca8;--line:rgba(201,167,94,.22)}
+:root[data-theme=light],:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-snap-type:y proximity;scroll-behavior:smooth;scroll-padding-top:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:300 17px/1.65 Jost,system-ui,sans-serif;overflow-x:clip;-webkit-font-smoothing:antialiased}
+#sky{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+.veil{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(120% 80% at 50% 110%,rgba(110,92,168,.16),transparent 60%),linear-gradient(90deg,rgba(7,7,10,.86) 0%,rgba(7,7,10,.35) 55%,rgba(7,7,10,0) 100%);transition:opacity 1s}
+body.centered .veil{opacity:.35}
+main{position:relative;z-index:2}
+h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;font-weight:300;margin:0;line-height:1.05;text-wrap:balance}
+h2{font-size:clamp(40px,5.4vw,72px)}
+h3{font-size:30px;font-weight:400}
+em{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--gold2)}
+p{margin:0 0 1em;max-width:34em}
+a{color:inherit}
+/* top bar */
+.bar{position:fixed;top:0;left:0;right:0;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:18px max(4vw,16px);background:linear-gradient(rgba(7,7,10,.8),transparent)}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;font-weight:400;letter-spacing:.32em;font-size:13px}
+.brand svg{width:30px;height:30px}
+.nav{display:flex;gap:26px;font-size:14px}
+.nav a{text-decoration:none;color:var(--mute);padding:10px 0;transition:color .4s}
+.nav a.on,.nav a:hover{color:var(--gold2)}
+.present{font:inherit;font-size:14px;color:var(--ink);background:none;border:1px solid var(--line);border-radius:40px;padding:10px 18px;cursor:pointer;min-height:44px}
+.present:hover{border-color:var(--gold)}
+/* chambers */
+.ch{min-height:100svh;scroll-snap-align:start;display:flex;flex-direction:column;justify-content:center;padding:110px max(7vw,18px) 100px}
+.wrap{width:100%;max-width:1240px;margin:0 auto}
+.col{max-width:600px}
+.kicker{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:22px;color:var(--gold);margin-bottom:18px}
+.lede{font-size:clamp(19px,1.8vw,22px);color:var(--ink);margin:26px 0 22px}
+.soft{color:var(--mute)}
+.rv{opacity:0;transform:translateY(22px);transition:opacity 1.2s ease,transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.in .rv{opacity:1;transform:none}
+.in .rv:nth-child(2){transition-delay:.12s}.in .rv:nth-child(3){transition-delay:.24s}.in .rv:nth-child(4){transition-delay:.36s}.in .rv:nth-child(5){transition-delay:.48s}
+/* portal */
+#portal{align-items:center;text-align:center}
+.mark{width:clamp(120px,18vw,190px);height:auto;margin:0 auto 34px;display:block;filter:drop-shadow(0 0 24px rgba(201,167,94,.35))}
+.mark .draw{stroke-dasharray:400;stroke-dashoffset:400;animation:draw 3.2s .3s cubic-bezier(.6,0,.2,1) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.word{font-family:"Cormorant Garamond",serif;font-weight:300;font-size:clamp(54px,10vw,132px);letter-spacing:.18em;margin-right:-.18em;line-height:1}
+.word b{font-weight:300;color:var(--gold2)}
+.tag{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:clamp(22px,2.6vw,30px);color:var(--silver);margin:18px 0 40px}
+.enter{display:inline-flex;align-items:center;gap:12px;font:400 15px Jost,sans-serif;color:var(--bg);background:linear-gradient(135deg,var(--gold2),var(--gold));border:0;border-radius:40px;padding:14px 30px;cursor:pointer;text-decoration:none;min-height:48px;box-shadow:0 0 40px rgba(201,167,94,.25)}
+.enter:hover{filter:brightness(1.08)}
+.where{margin-top:48px;font-size:14px;color:var(--mute)}
+/* beyond */
+.twelve{display:flex;flex-wrap:wrap;gap:8px 22px;margin:30px 0 34px;font-family:"Cormorant Garamond",serif;font-size:19px;color:var(--mute)}
+.twelve span{white-space:nowrap}
+.twelve span:last-child{color:var(--gold2)}
+.thirteen{font-family:"Cormorant Garamond",serif;font-size:clamp(26px,2.8vw,34px);line-height:1.25;color:var(--ink);border-left:1px solid var(--gold);padding-left:22px;max-width:22em}
+/* society */
+.vals{list-style:none;padding:0;margin:40px 0 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 40px;max-width:640px}
+.vals li{border-top:1px solid var(--line);padding-top:16px}
+.vals h3{color:var(--gold2);margin-bottom:6px}
+.vals p{color:var(--mute);font-size:16px;margin:0}
+/* experiences */
+.moons{display:flex;gap:10px;margin:30px 0 8px;flex-wrap:wrap}
+.moons i{width:18px;height:18px;border-radius:50%;border:1px solid var(--gold);display:block;position:relative;overflow:hidden}
+.moons i::after{content:"";position:absolute;inset:0;background:var(--gold2);border-radius:50%;transform:translateX(var(--p))}
+.moons-cap{font-size:14px;color:var(--mute);margin-bottom:34px}
+.ex{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:34px 44px;max-width:680px}
+.ex div{position:relative;padding-left:34px}
+.ex svg{position:absolute;left:0;top:6px;width:20px;height:20px;stroke:var(--gold);fill:none;stroke-width:1.2}
+.ex p{color:var(--mute);font-size:16px;margin:4px 0 0}
+/* sanctuary */
+.sanct{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(30px,5vw,80px);align-items:center}
+.plan{width:100%;max-width:520px;aspect-ratio:1;justify-self:center}
+.plan text{font:400 12.5px Jost,sans-serif;fill:var(--silver);letter-spacing:.04em}
+.plan .g{stroke:var(--gold);fill:none}
+.spaces{list-style:none;padding:0;margin:28px 0 0}
+.spaces li{display:grid;grid-template-columns:8.5em minmax(0,1fr);gap:16px;padding:13px 0;border-top:1px solid var(--line);font-size:16px}
+.spaces b{font-weight:400;color:var(--gold2)}
+.spaces span{color:var(--mute)}
+.path{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;margin-top:64px;position:relative}
+.path::before{content:"";position:absolute;top:7px;left:7px;right:7px;height:1px;background:linear-gradient(90deg,var(--gold),rgba(201,167,94,.15))}
+.path div{position:relative;padding-top:30px}
+.path div::before{content:"";position:absolute;top:0;left:0;width:15px;height:15px;border-radius:50%;background:var(--bg);border:1px solid var(--gold)}
+.path div:first-child::before{background:var(--gold2);box-shadow:0 0 18px var(--gold)}
+.path small{display:block;font-size:14px;color:var(--gold)}
+.path strong{display:block;font-family:"Cormorant Garamond",serif;font-weight:400;font-size:26px;margin:2px 0 4px}
+.path p{font-size:15px;color:var(--mute)}
+/* invitation */
+#invitation .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(30px,6vw,90px);align-items:center}
+form{background:rgba(13,12,18,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:6px;padding:clamp(22px,3vw,38px)}
+label{display:block;font-size:14px;color:var(--mute);margin:0 0 6px}
+input,select,textarea{width:100%;font:300 16px Jost,sans-serif;color:var(--ink);background:rgba(255,255,255,.03);border:1px solid rgba(239,233,221,.16);border-radius:4px;padding:12px 14px;margin-bottom:18px;min-height:46px}
+textarea{min-height:96px;resize:vertical}
+select option{background:#111}
+input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible{outline:1px solid var(--gold2);outline-offset:2px}
+.sent{display:none}
+.sent.show{display:block}
+.sent p{color:var(--mute)}
+.addr{font-family:"Cormorant Garamond",serif;font-size:24px;color:var(--gold2);word-break:break-all}
+.row{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+.ghost{font:400 15px Jost,sans-serif;color:var(--ink);background:none;border:1px solid var(--line);border-radius:40px;padding:12px 22px;cursor:pointer;min-height:46px;text-decoration:none;display:inline-flex;align-items:center}
+.ghost:hover{border-color:var(--gold)}
+footer{position:relative;z-index:2;text-align:center;padding:40px 18px 110px;color:var(--mute);font-size:14px}
+footer .motto{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:22px;color:var(--silver);margin-bottom:8px}
+/* deck controls */
+.deck{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:6;display:flex;align-items:center;gap:6px;background:rgba(13,12,18,.7);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:40px;padding:4px}
+.deck button{width:44px;height:44px;border-radius:50%;border:0;background:none;color:var(--ink);font-size:18px;cursor:pointer}
+.deck button:hover{color:var(--gold2)}
+.deck span{font-size:14px;color:var(--mute);min-width:9.5em;text-align:center;white-space:nowrap}
+@media(max-width:900px){.nav{display:none}}
+@media(max-width:760px){
+ .veil{background:linear-gradient(rgba(7,7,10,.55),rgba(7,7,10,.7))}
+ .sanct,#invitation .wrap{grid-template-columns:minmax(0,1fr)}
+ .plan{max-width:380px;order:-1}
+ .path{grid-template-columns:minmax(0,1fr);gap:4px}.path::before{top:7px;bottom:7px;left:7px;right:auto;width:1px;height:auto;background:linear-gradient(var(--gold),rgba(201,167,94,.15))}
+ .path div{padding:0 0 18px 34px}
+}
+@media(max-width:600px){
+ body{font-size:16px}
+ .vals,.ex{grid-template-columns:minmax(0,1fr)}
+ .spaces li{grid-template-columns:minmax(0,1fr);gap:2px}
+ .present{display:none}
+ .deck span{min-width:7em}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.rv{opacity:1;transform:none;transition:none}.mark .draw{animation:none;stroke-dashoffset:0}}
+</style>
+</head>
+<body class="centered">
+<canvas id="sky" aria-hidden="true"></canvas>
+<div class="veil"></div>
+
+<header class="bar">
+ <a class="brand" href="#portal" aria-label="LEVEL 13 home">
+  <svg viewBox="0 0 120 120" aria-hidden="true"><use href="#m"/></svg>LEVEL 13
+ </a>
+ <nav class="nav" id="nav"></nav>
+ <button class="present" id="present" type="button">Present</button>
+</header>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <defs>
+  <linearGradient id="gd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f1dca6"/><stop offset=".5" stop-color="#c9a75e"/><stop offset="1" stop-color="#8e7138"/></linearGradient>
+  <g id="m" fill="none" stroke="url(#gd)" stroke-linecap="round">
+   <circle cx="60" cy="60" r="54" stroke-width="1.6"/>
+   <g id="tk" stroke-width="1.6"></g>
+   <line x1="60" y1="26" x2="60" y2="94" stroke-width="2.4"/>
+   <path d="M62 33Q86 33 85 47Q84 59 64 60Q86 61 86 74Q86 88 62 88" stroke-width="2.4"/>
+   <path d="M58 33Q34 33 35 47Q36 59 56 60Q34 61 34 74Q34 88 58 88" stroke-width="2.4"/>
+   <circle cx="60" cy="60" r="2.6" fill="#f1dca6" stroke="none"/>
+  </g>
+ </defs>
+</svg>
+
+<main>
+ <section class="ch" id="portal" data-name="The Portal">
+  <div class="wrap">
+   <svg class="mark rv" viewBox="0 0 120 120" role="img" aria-label="The LEVEL 13 mark: a mirrored 13 inside a ring of twelve">
+    <g fill="none" stroke="url(#gd)" stroke-linecap="round">
+     <circle class="draw" cx="60" cy="60" r="54" stroke-width="1.2"/>
+     <g id="tk2" stroke-width="1.2"></g>
+     <line class="draw" x1="60" y1="26" x2="60" y2="94" stroke-width="1.8"/>
+     <path class="draw" d="M62 33Q86 33 85 47Q84 59 64 60Q86 61 86 74Q86 88 62 88" stroke-width="1.8"/>
+     <path class="draw" d="M58 33Q34 33 35 47Q36 59 56 60Q34 61 34 74Q34 88 58 88" stroke-width="1.8"/>
+     <circle cx="60" cy="60" r="2.2" fill="#f1dca6" stroke="none"/>
+    </g>
+   </svg>
+   <h1 class="word rv">LEVEL <b>13</b></h1>
+   <p class="tag rv" style="margin-inline:auto">Beyond the known.</p>
+   <a class="enter rv" href="#beyond">Enter <span aria-hidden="true">→</span></a>
+   <p class="where rv" style="margin-inline:auto">Austin, Texas · A society in formation</p>
+  </div>
+ </section>
+
+ <section class="ch" id="beyond" data-name="Beyond the 12">
+  <div class="wrap"><div class="col">
+   <p class="kicker rv">Beyond the 12</p>
+   <h2 class="rv">Every system we were given counts to twelve. Then begins again.</h2>
+   <div class="twelve rv" id="twelve"></div>
+   <p class="thirteen rv">Thirteen is the step outside the circle — where the count stops, separation falls away, and all is one.</p>
+   <p class="lede soft rv">LEVEL reads the same in either direction. So does the mark: a 13 meeting its own reflection, held inside the twelve.</p>
+  </div></div>
+ </section>
+
+ <section class="ch" id="society" data-name="The Society">
+  <div class="wrap"><div class="col">
+   <p class="kicker rv">The Society</p>
+   <h2 class="rv">Not a membership. <em>A frequency.</em></h2>
+   <p class="lede rv">A curated circle of artists, builders, visionaries and the quietly curious. Invitation first. Presence always.</p>
+   <ul class="vals rv" id="vals"></ul>
+  </div></div>
+ </section>
+
+ <section class="ch" id="experiences" data-name="The Experiences">
+  <div class="wrap"><div class="col">
+   <p class="kicker rv">The Gatherings</p>
+   <h2 class="rv">A time. A sign. <em>A door.</em></h2>
+   <p class="lede rv">The location arrives late, if at all. What waits inside is never quite the same twice.</p>
+   <div class="rv"><div class="moons" id="moons" aria-hidden="true"></div>
+   <p class="moons-cap">Thirteen moons in a year. The vision: one gathering for each.</p></div>
+   <div class="ex rv" id="ex"></div>
+  </div></div>
+ </section>
+
+ <section class="ch" id="sanctuary" data-name="The Sanctuary">
+  <div class="wrap">
+   <div class="sanct">
+    <div>
+     <p class="kicker rv">The Sanctuary</p>
+     <h2 class="rv">One day, a place <em>to return to.</em></h2>
+     <p class="lede soft rv">A permanent home in Austin, drawn from the same geometry: twelve chambers around a centre.</p>
+     <ul class="spaces rv" id="spaces"></ul>
+    </div>
+    <svg class="plan rv" id="plan" viewBox="0 0 520 520" role="img" aria-label="Concept floor plan: a round sanctuary with twelve gallery alcoves around a central chamber"></svg>
+   </div>
+   <div class="path rv" id="path"></div>
+  </div>
+ </section>
+
+ <section class="ch" id="invitation" data-name="The Invitation">
+  <div class="wrap">
+   <div>
+    <p class="kicker rv">The Invitation</p>
+    <h2 class="rv">You weren't meant to find this. <em>And yet.</em></h2>
+    <p class="lede rv">The first circle is forming now — founding members, artists, collaborators and partners who want to build what comes after the twelve.</p>
+    <p class="soft rv">Leave a few words. If it resonates, you'll hear from us.</p>
+   </div>
+   <div class="rv">
+    <form id="f" novalidate>
+     <label for="n">Name</label><input id="n" name="n" autocomplete="name" required>
+     <label for="e">Email</label><input id="e" name="e" type="email" autocomplete="email" required>
+     <label for="r">I come as</label>
+     <select id="r" name="r"><option>A founding member</option><option>An artist</option><option>A collaborator</option><option>A venue partner</option><option>An investor</option><option>Simply curious</option></select>
+     <label for="w">What brought you here?</label><textarea id="w" name="w"></textarea>
+     <button class="enter" type="submit">Request an invitation</button>
+    </form>
+    <div class="sent" id="sent" aria-live="polite">
+     <form>
+      <h3>Your note is ready.</h3>
+      <p>Send it to the society directly:</p>
+      <div class="addr">thomaszente@gmail.com</div>
+      <div class="row"><a class="enter" id="mail" href="#">Open in mail</a><button class="ghost" id="copy" type="button">Copy note</button><button class="ghost" id="back" type="button">Edit</button></div>
+     </form>
+    </div>
+   </div>
+  </div>
+ </section>
+</main>
+
+<footer>
+ <div class="motto">Beyond the stars. Beyond separation. All is one.</div>
+ LEVEL 13 · Austin, Texas · An emerging concept
+</footer>
+
+<div class="deck" aria-label="Presentation controls">
+ <button id="prev" type="button" aria-label="Previous chamber">←</button>
+ <span id="where">The Portal</span>
+ <button id="next" type="button" aria-label="Next chamber">→</button>
+</div>
+
+<script>
+{
+const $=s=>document.querySelector(s);
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+// ticks for the mark
+const ticks=Array.from({length:12},(_,i)=>{const a=i/12*Math.PI*2,c=Math.cos(a),s=Math.sin(a);return `<line x1="${60+c*54}" y1="${60+s*54}" x2="${60+c*48}" y2="${60+s*48}"/>`}).join('');
+$('#tk').innerHTML=ticks;$('#tk2').innerHTML=ticks;
+
+// content
+$('#twelve').innerHTML=['Twelve signs','Twelve months','Twelve hours a turn','Twelve notes to an octave','Twelve, again','Thirteen →'].map(t=>`<span>${t}</span>`).join('');
+$('#vals').innerHTML=[['Presence','Phones down. Fully here.'],['Unity','Many disciplines, one room.'],['Expression','Make something true. Share it.'],['Discovery','Arrive curious. Leave changed.']].map(([h,p])=>`<li><h3>${h}</h3><p>${p}</p></li>`).join('');
+$('#moons').innerHTML=Array.from({length:13},(_,i)=>`<i style="--p:${(i/12*200-100).toFixed(0)}%"></i>`).join('');
+const ic={sound:'<path d="M2 10h2M6 6v8M10 3v14M14 6v8M18 9v2"/>',art:'<circle cx="10" cy="10" r="8"/><path d="M10 2v16M2 10h16"/>',talk:'<path d="M3 4h14v9H8l-4 3v-3H3z"/>',rite:'<path d="M10 2l2.5 5.5L18 10l-5.5 2.5L10 18l-2.5-5.5L2 10l5.5-2.5z"/>'};
+$('#ex').innerHTML=[['sound','Sound','Underground music on serious systems, in rooms built to listen.'],['art','Art','Immersive works you walk into, not past.'],['talk','Dialogue','Small circles. Real conversation. No stage.'],['rite','Thresholds','Seasonal rituals, reimagined for now.']].map(([k,h,p])=>`<div><svg viewBox="0 0 20 20">${ic[k]}</svg><h3>${h}</h3><p>${p}</p></div>`).join('');
+$('#spaces').innerHTML=[['The Threshold','An unmarked door. The city falls away.'],['The Lounge','A private members room for slow evenings.'],['The Chamber','An underground floor around an exceptional sound system.'],['The Gallery','Twelve alcoves of immersive art, circling the centre.'],['The Circle','A space for conversation, ceremony and small gatherings.']].map(([b,s])=>`<li><b>${b}</b><span>${s}</span></li>`).join('');
+$('#path').innerHTML=[['Now','The Society','Building the identity and the first circle.'],['Next','The Gatherings','Secret, intimate experiences across Austin.'],['Someday','The Sanctuary','A permanent home for the community.']].map(([s,t,p])=>`<div><small>${s}</small><strong>${t}</strong><p>${p}</p></div>`).join('');
+// plan
+{let g='';const C=260;
+ g+=`<circle class="g" cx="${C}" cy="${C}" r="236" stroke-width="1.2"/><circle class="g" cx="${C}" cy="${C}" r="226" stroke-width=".6" opacity=".5"/>`;
+ for(let i=0;i<12;i++){const a0=(i/12)*Math.PI*2-Math.PI/2+.06,a1=((i+1)/12)*Math.PI*2-Math.PI/2-.06,R1=214,R2=164;
+  const p=(r,a)=>`${(C+Math.cos(a)*r).toFixed(1)} ${(C+Math.sin(a)*r).toFixed(1)}`;
+  if(i===5||i===6)continue;
+  g+=`<path class="g" d="M${p(R1,a0)}A${R1} ${R1} 0 0 1 ${p(R1,a1)}L${p(R2,a1)}A${R2} ${R2} 0 0 0 ${p(R2,a0)}Z" stroke-width=".9" fill="rgba(201,167,94,${i%2?.05:.09})"/>`}
+ g+=`<path class="g" d="M232 496L232 400M288 496L288 400" stroke-width=".9"/>`;
+ g+=`<circle class="g" cx="${C}" cy="${C}" r="132" stroke-width="1.2" fill="rgba(110,92,168,.10)"/>`;
+ for(let r=18;r<120;r+=22)g+=`<circle class="g" cx="${C}" cy="${C}" r="${r}" stroke-width=".5" opacity="${(.7-r/200).toFixed(2)}"/>`;
+ g+=`<circle cx="${C}" cy="${C}" r="5" fill="#f1dca6"/>`;
+ g+=`<text x="${C}" y="${C-140}" text-anchor="middle" dy="-40" fill="#b9bcc6">Gallery</text>`;
+ g+=`<text x="${C}" y="${C+30}" text-anchor="middle">Chamber</text>`;
+ g+=`<text x="${C}" y="512" text-anchor="middle">Threshold</text>`;
+ g+=`<text x="106" y="${C+4}" text-anchor="middle">Lounge</text><text x="414" y="${C+4}" text-anchor="middle">Circle</text>`;
+ $('#plan').innerHTML=g}
+
+// sections, nav, deck
+const secs=[...document.querySelectorAll('.ch')];
+$('#nav').innerHTML=secs.map(s=>`<a href="#${s.id}" data-id="${s.id}">${s.dataset.name.replace('The ','')}</a>`).join('');
+let cur=0;
+const go=i=>{i=Math.max(0,Math.min(secs.length-1,i));secs[i].scrollIntoView({behavior:reduce?'auto':'smooth'})};
+$('#prev').onclick=()=>go(cur-1);$('#next').onclick=()=>go(cur+1);
+addEventListener('keydown',e=>{if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;
+ if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();go(cur+1)}
+ else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();go(cur-1)}
+ else if(e.key==='Home'){e.preventDefault();go(0)}else if(e.key==='End'){e.preventDefault();go(secs.length-1)}});
+$('#present').onclick=()=>{try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{})}catch(e){}};
+document.addEventListener('fullscreenchange',()=>{$('#present').textContent=document.fullscreenElement?'Exit':'Present'});
+
+// scene targets per chamber: radius, tilt, star step weights k1..k6, spokes, labels, x offset, glow
+const T=[
+ {r:1,t:.95,k:[0,0,0,0,1,0],sp:0,lb:0,ox:.5,gl:1},
+ {r:1.08,t:.18,k:[1,0,0,0,0,0],sp:0,lb:1,ox:.7,gl:.6},
+ {r:1,t:1.0,k:[.35,.35,.35,.35,.35,.35],sp:.8,lb:0,ox:.7,gl:1},
+ {r:1.12,t:1.25,k:[0,0,1,1,0,0],sp:0,lb:0,ox:.72,gl:.8},
+ {r:.9,t:.05,k:[1,0,0,0,0,0],sp:.25,lb:0,ox:.5,gl:.4,al:.35},
+ {r:.5,t:.7,k:[0,0,0,0,1,0],sp:1,lb:0,ox:.5,gl:2}];
+const S={r:1,t:.95,k:[0,0,0,0,1,0],sp:0,lb:0,ox:.5,gl:1,al:1};
+let tgt=T[0];
+
+const io=new IntersectionObserver(es=>{for(const e of es){if(e.isIntersecting){e.target.classList.add('in');const i=secs.indexOf(e.target);cur=i;tgt=T[i];
+ $('#where').textContent=e.target.dataset.name;
+ document.body.classList.toggle('centered',i===0||i===5||i===4);
+ document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.id===e.target.id));
+ try{history.replaceState(null,'','#'+e.target.id)}catch(_){}}}},{threshold:.45});
+secs.forEach(s=>io.observe(s));
+if(location.hash){const el=document.getElementById(location.hash.slice(1));if(el)setTimeout(()=>el.scrollIntoView(),60)}
+
+// canvas
+const cv=$('#sky'),c=cv.getContext('2d');let W=0,H=0,D=1,mx=0,my=0;
+const size=()=>{D=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*D;cv.height=H*D;c.setTransform(D,0,0,D,0,0)};
+const ro=new ResizeObserver(size);ro.observe(document.documentElement);size();
+addEventListener('pointermove',e=>{mx=e.clientX/W-.5;my=e.clientY/H-.5},{passive:true});
+const stars=Array.from({length:520},()=>({x:Math.random(),y:Math.random(),z:Math.random()**2,p:Math.random()*6.28}));
+const rom=['XII','I','II','III','IV','V','VI','VII','VIII','IX','X','XI'];
+const L=(a,b,f)=>a+(b-a)*f;
+let t0=performance.now(),spin=0;
+const frame=now=>{
+ const dt=Math.min(50,now-t0)/1000;t0=now;const f=1-Math.pow(.02,dt);
+ S.r=L(S.r,tgt.r,f);S.t=L(S.t,tgt.t,f);S.sp=L(S.sp,tgt.sp,f);S.lb=L(S.lb,tgt.lb,f);S.gl=L(S.gl,tgt.gl,f);S.al=L(S.al,tgt.al??1,f);
+ const narrow=W<760;S.ox=L(S.ox,narrow?.5:tgt.ox,f);
+ for(let i=0;i<6;i++)S.k[i]=L(S.k[i],tgt.k[i],f);
+ if(!reduce)spin+=dt*.07;
+ c.fillStyle='#07070a';c.fillRect(0,0,W,H);
+ // stars
+ for(const s of stars){const x=(s.x*W+mx*-40*(1-s.z)+W)%W,y=(s.y*H+my*-40*(1-s.z)+H)%H,tw=reduce?.7:.55+.45*Math.sin(now/900+s.p);
+  c.fillStyle=`rgba(${s.z<.08?'232,207,148':'200,204,220'},${(.15+.6*(1-s.z))*tw})`;c.fillRect(x,y,s.z<.1?1.6:1,s.z<.1?1.6:1)}
+ // ring
+ const cx=W*S.ox,cy=H*.5,R=Math.min(W,H)*(narrow?.36:.3)*S.r,tl=S.t+my*.25,yw=mx*.5+(reduce?0:Math.sin(now/5200)*.18);
+ const P=[];for(let i=0;i<12;i++){const a=i/12*Math.PI*2+spin-Math.PI/2;let x=Math.cos(a),y=Math.sin(a),z=0;
+  let x2=x*Math.cos(yw)+z*Math.sin(yw);z=-x*Math.sin(yw)+z*Math.cos(yw);x=x2;
+  const y2=y*Math.cos(tl)-z*Math.sin(tl);z=y*Math.sin(tl)+z*Math.cos(tl);y=y2;
+  const pz=3/(3+z);P.push({x:cx+x*R*pz,y:cy+y*R*pz,z,pz})}
+ const A=S.al*(narrow?.6:1);
+ c.lineWidth=1;
+ for(let k=1;k<=6;k++){const w=S.k[k-1];if(w<.01)continue;
+  for(let i=0;i<12;i++){if(k===6&&i>=6)continue;const a=P[i],b=P[(i+k)%12];const d=.55+.45*(1-(a.z+b.z)/2*.5);
+   c.strokeStyle=`rgba(201,167,94,${(w*.42*d*A).toFixed(3)})`;c.beginPath();c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);c.stroke()}}
+ if(S.sp>.01){for(const p of P){c.strokeStyle=`rgba(185,188,198,${(S.sp*.22*A).toFixed(3)})`;c.beginPath();c.moveTo(cx,cy);c.lineTo(p.x,p.y);c.stroke()}}
+ // outer orbit ellipse
+ c.strokeStyle=`rgba(201,167,94,${(.14*A).toFixed(3)})`;c.beginPath();
+ for(let j=0;j<=72;j++){const a=j/72*Math.PI*2;let x=Math.cos(a)*1.18,y=Math.sin(a)*1.18,z=0;let x2=x*Math.cos(yw);z=-x*Math.sin(yw);x=x2;const y2=y*Math.cos(tl)-z*Math.sin(tl);z=y*Math.sin(tl)+z*Math.cos(tl);const pz=3/(3+z);j?c.lineTo(cx+x*R*pz,cy+y2*R*pz):c.moveTo(cx+x*R*pz,cy+y2*R*pz)}c.stroke();
+ // glow at the 13th
+ const gr=c.createRadialGradient(cx,cy,0,cx,cy,R*.9*Math.max(.4,S.gl));gr.addColorStop(0,`rgba(241,220,166,${(.5*A).toFixed(3)})`);gr.addColorStop(.18,`rgba(110,92,168,${(.22*A).toFixed(3)})`);gr.addColorStop(1,'rgba(110,92,168,0)');
+ c.fillStyle=gr;c.beginPath();c.arc(cx,cy,R*.9*Math.max(.4,S.gl),0,7);c.fill();
+ c.fillStyle=`rgba(255,244,214,${A})`;c.beginPath();c.arc(cx,cy,2.6+S.gl,0,7);c.fill();
+ // nodes + numerals
+ c.font='400 12px Jost,sans-serif';c.textAlign='center';c.textBaseline='middle';
+ P.forEach((p,i)=>{const s=2.2*p.pz;c.fillStyle=`rgba(232,207,148,${(.9*A).toFixed(3)})`;c.beginPath();c.arc(p.x,p.y,s,0,7);c.fill();
+  c.strokeStyle=`rgba(232,207,148,${(.25*A).toFixed(3)})`;c.beginPath();c.arc(p.x,p.y,s*3.2,0,7);c.stroke();
+  if(S.lb>.02){const dx=p.x-cx,dy=p.y-cy,m=Math.hypot(dx,dy)||1;c.fillStyle=`rgba(185,188,198,${(S.lb*.85*A).toFixed(3)})`;c.fillText(rom[i],p.x+dx/m*24,p.y+dy/m*24)}});
+ requestAnimationFrame(frame)};
+requestAnimationFrame(frame);
+
+// invitation
+const f=$('#f');let note='';
+f.addEventListener('submit',e=>{e.preventDefault();const n=$('#n').value.trim(),em=$('#e').value.trim();
+ if(!n){$('#n').focus();return}if(!/^\S+@\S+\.\S+$/.test(em)){$('#e').focus();return}
+ note=`Name: ${n}\nEmail: ${em}\nI come as: ${$('#r').value}\n\n${$('#w').value.trim()}`;
+ $('#mail').href='mailto:thomaszente@gmail.com?subject='+encodeURIComponent('LEVEL 13 — Invitation request')+'&body='+encodeURIComponent(note);
+ f.style.display='none';$('#sent').classList.add('show')});
+$('#back').onclick=()=>{$('#sent').classList.remove('show');f.style.display=''};
+$('#copy').onclick=async()=>{try{await navigator.clipboard.writeText(note);$('#copy').textContent='Copied'}catch(_){$('#copy').textContent='Copy blocked'}};
+}
+</script>
+</body>
+</html>
